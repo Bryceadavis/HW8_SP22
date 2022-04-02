@@ -56,13 +56,13 @@ class MainWindow(qtw.QWidget, Ui_Form):
         :return:
         """
         #Step 1.
-        self.figure=Figure(figsize=(4,4),tight_layout=True, frameon=True)
+        self.figure=Figure(figsize=(2,4),tight_layout=True, frameon=True)
         #Step 2.
         self.canvas=FigureCanvasQTAgg(self.figure)
         #Step 3.
         self.ax = self.figure.add_subplot()
-        #Step 4. I can not here you sorry. I had gotten off the call
-        self.layoutHorizontalMain.addWidget(self.canvas)
+        #Step 4.
+        self.gb_Output.layout().addWidget(self.canvas, 6)
         self.canvas.mpl_connect("motion_notify_event", self.mouseMoveEvent)
 
     #since my main window is a widget, I can customize its events by overriding the default event
