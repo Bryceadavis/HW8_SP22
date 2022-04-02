@@ -42,9 +42,10 @@ class MainWindow(qtw.QWidget, Ui_Form):
         self.btn_Calculate.clicked.connect(self.Calculate)
         self.rdo_Quality.clicked.connect(self.SelectQualityOrTHigh)
         self.rdo_THigh.clicked.connect(self.SelectQualityOrTHigh)
-        self.le_PLow.textChanged[str].connect(self.Change)
-        self.le_PHigh.textChanged[str].connect(self.Changeh)
-        self.le_TurbineInletCondition.textChanged[str].connect(self.ChangeT)
+        self.le_PLow.textChanged[str].connect(self.NewPlow)
+        self.le_PHigh.textChanged[str].connect(self.NewPhigh)
+        self.le_TurbineInletCondition.textChanged[str].connect(self.NewT)
+        self.rb_English.clicked.connect(self.SetUnits)
 
     def MakeCanvas(self):
         """
@@ -83,23 +84,27 @@ class MainWindow(qtw.QWidget, Ui_Form):
         #use rankineController to update the model based on user inputs
         self.RC.updateModel((self.le_PHigh, self.le_PLow, self.rdo_Quality, self.le_TurbineInletCondition, self.le_TurbineEff))
 
-    def Change(self):
+    def NewPlow(self):
 
         self.RC.updateModel((self.le_PHigh, self.le_PLow, self.rdo_Quality, self.le_TurbineInletCondition, self.le_TurbineEff))
         self.show()
 
-    def Changeh(self):
-        self.RC.updateModel((self.le_PHigh, self.le_PLow, self.rdo_Quality, self.le_TurbineInletCondition, self.le_TurbineEff))
-        self.show()
-    def ChangeT(self):
+    def NewPhigh(self):
         self.RC.updateModel((self.le_PHigh, self.le_PLow, self.rdo_Quality, self.le_TurbineInletCondition, self.le_TurbineEff))
         self.show()
 
+    def NewT(self):
+        self.RC.updateModel((self.le_PHigh, self.le_PLow, self.rdo_Quality, self.le_TurbineInletCondition, self.le_TurbineEff))
+        self.show()
 
+    def SetUnits(self):
+        # self.RC.updateUnits(self.widgets, self.otherwidgets, SI=self.rb_SI.isChecked())
+        pass
 
 #if this module is being imported, this won't run. If it is the main module, it will run.
 if __name__== '__main__':
     app = qtw.QApplication(sys.argv)
     mw = MainWindow()
     mw.setWindowTitle('Rankine calculator')
+    pass
     sys.exit(app.exec())

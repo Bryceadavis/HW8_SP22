@@ -1,3 +1,4 @@
+import Calc_state
 from Calc_state import Steam_SI as steam
 from Calc_state import SatPropsIsobar
 import numpy as np
@@ -45,6 +46,19 @@ class rankineController():
         self.Model=rankineModel()
         self.View=rankineView()
         self.Widgets=args[0]
+
+    #def updateUnits(self, *args, SI=True):
+        # self.le_H1, self.le_H2, self.le_H3, self.le_H4, self.le_TurbineWork, \
+        # self.le_PumpWork, self.le_HeatAdded, self.le_Efficiency, self.lbl_SatPropHigh, \
+        # self.lbl_SatPropLow, self.ax, self.canvas = args[0]
+        # self.le_PHigh, self.le_PLow, self.le_TurbineInletCondition, self.lbl_PHigh, \
+        # self.lbl_PLow, self.lbl_H1Units, self.lbl_H2Units, self.lbl_H3Units, self.lbl_H4Units, \
+        # self.lbl_TurbineWorkUnits, self.lbl_PumpWorkUnits, self.lbl_HeatAddedUnits = args[1]
+        #
+        # if SI is False:
+        #     english = SatPropsIsobar((self.le_PLow), SI=False), SatPropsIsobar((self.le_PHigh), SI=False)
+        #
+        #     return english
 
     def updateModel(self, *args):
         """
