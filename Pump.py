@@ -1,37 +1,51 @@
-import numpy as np
-from Calc_state import Steam_SI as steam  # import any of your own classes as you wish
-
 import sys
-#from PyQt5.QtWidgets import QWidget, QApplication
-# from PyQt5.QtWidgets import QFileDialog, QMessageBox
-# from PyQt5.QtGui import QCursor
-# from PyQt5.QtCore import Qt
+from PyQt5 import QtWidgets as qtw
+from PyQt5 import QtCore as qtc
+from Pump_GUI import Ui_Form
+from Rankine_Classes import rankineController
+import Calc_state
+from Calc_state import SatPropsIsobar
+from Calc_state import UnitConverter as UC
+from Rankine_Classes import rankineView
+# test
+# test test test test test test testy hello!!!!
+#these imports are necessary for drawing a matplot lib graph on my GUI
+#no simple widget for this exists in QT Designer, so I have to add the widget in code.
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.figure import Figure
 
-from Pump_GUI import Ui_Form  # from the GUI file your created
-
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
-import PyQt5.QtGui as qtg
-
-class main_window(qtw.QWidget, Ui_Form):
+class MainWindow(qtw.QWidget, Ui_Form):
     def __init__(self):
         """
-        Constructor for the main window of the application.  This class inherits from QWidget and Ui_Form
+        MainWindow constructor
         """
-        super().__init__()  # run constructor of parent classes
-        self.setupUi(self)  # run setupUi() (see Ui_Form)
-        # $JES MISSING CODE$ ('Steam Property Calculator') # set the window title
-        self.setWindowTitle( 'Pump Data') #&AKO
-
-        self.assign_widgets()  # connects signals and slots
+        super().__init__()  #if you inherit, you generally should run the parent constructor first.
+        # Main UI code goes here
+        self.setupUi(self)
+        self.AssignSlots()
+        self.MakeCanvas()
+        #A tuple containing the widgets that get updated in the View
+        #self.widgets = (self.le_H1, self.le_H2, self.le_H3, self.le_H4, self.le_TurbineWork, self.le_PumpWork, self.le_HeatAdded, self.le_Efficiency, self.lbl_SatPropHigh, self.lbl_SatPropLow, self.ax, self.canvas)
+        #self.RC = rankineController(self.widgets)  # instantiate a rankineController object
+        # a place to store coordinates from last position on graph
+        #self.otherwidgets = (self.le_PHigh, self.le_PLow, self.le_TurbineInletCondition, self.lbl_PHigh, self.lbl_PLow, self.lbl_H1Units, self.lbl_H2Units, self.lbl_H3Units, self.lbl_H4Units, self.lbl_TurbineWorkUnits, self.lbl_PumpWorkUnits, self.lbl_HeatAddedUnits)
+        self.oldXData=0.0
+        self.oldYData=0.0
+        # End main ui code
         self.show()
 
-    def assign_widgets(self):
-        """This function controls what happens when the GUI buttons are clicked."""
-        self.ExitPushButton.clicked.connect(self.ExitApp) #closes app when exit is clicked
-        # dialog= QFileDialog(self)
-        # dialog.setFileMode(QFileDialog.AnyFile)
-        self.FilenamePushButton.clicked.connect(self.OpenDialog) #calls Calculate function when Calculate is clicked
+    def AssignSlots(self):
+        """
+        Setup signals and slots for my program
+        :return:
+        """
+        self.ExitPushButton.clicked.connect(self.ExitApp)
+        self.FilenamePushButton.clicked.connect(self.OpenDialog)
+        # self.rdo_THigh.clicked.connect(self.SelectQualityOrTHigh)
+        # self.le_PLow.textChanged[str].connect(self.NewPlow)
+        # self.le_PHigh.textChanged[str].connect(self.NewPhigh)
+        # self.le_TurbineInletCondition.textChanged[str].connect(self.NewT)
+        # self.rb_English.clicked.connect(self.SetUnits)
 
     def OpenDialog(self):  #borrowed from Dr.Smay's PipeNetwork_App
         """
@@ -47,13 +61,47 @@ class main_window(qtw.QWidget, Ui_Form):
         data = file.readlines()  # read all the lines of the file into a list of strings
         # self.Controller.importPipeNetwork(data, PN=self.Model)  # import the pipe network information
         # self.updateView()  # update the view of the model
+        self.le_Filename.setText(filename)
+        self.lineEdit_2.setText(data[0])
+        Flow_and_Head=str.split(data[2]," ")
+        self.lineEdit_3.setText(Flow_and_Head[0])
+        #Head_Units=str.partition(Flow_and_Head[5]," ")
+        self.lineEdit_6.setText(Flow_and_Head[5])
         pass
 
     def ExitApp(self):
-        app.exit()
+            app.exit()
 
-if __name__ == '__main__':
+    def MakeCanvas(self):
+        """
+        Create a place to make graph of Rankine cycle
+        Step 1:  create a Figure object called self.figure
+        Step 2:  create a FigureCanvasQTAgg object called self.canvas
+        Step 3:  create an axes object for making plot
+        Step 4:  add self.canvas to self.gb_Output.layout() which is a grid layout
+        :return:
+        """
+        #Step 1.
+        self.figure=Figure(figsize=(2,4),tight_layout=True, frameon=True)
+        #Step 2.
+        self.canvas=FigureCanvasQTAgg(self.figure)
+        #Step 3.
+        self.ax = self.figure.add_subplot()
+        #Step 4.
+        # self.Output_groupBox.layout().addWidget(self.canvas, 6)
+        # self.canvas.mpl_connect("motion_notify_event", self.mouseMoveEvent)
+
+    #since my main window is a widget, I can customize its events by overriding the default event
+
+    # def Calculate(self):
+    #     #use rankineController to update the model based on user inputs
+    #     self.RC.updateModel((self.le_PHigh, self.le_PLow, self.rdo_Quality, self.le_TurbineInletCondition, self.le_TurbineEff))
+
+
+#if this module is being imported, this won't run. If it is the main module, it will run.
+if __name__== '__main__':
     app = qtw.QApplication(sys.argv)
-    mw = main_window()
-    mw.setWindowTitle('Pipe Network Designer')
+    mw = MainWindow()
+    mw.setWindowTitle('Rankine calculator')
+    pass
     sys.exit(app.exec())
