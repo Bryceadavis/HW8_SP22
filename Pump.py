@@ -102,6 +102,6 @@ class MainWindow(qtw.QWidget, Ui_Form):
 if __name__== '__main__':
     app = qtw.QApplication(sys.argv)
     mw = MainWindow()
-    mw.setWindowTitle('Rankine calculator')
+    mw.setWindowTitle('Pump Data')
     pass
     sys.exit(app.exec())
