@@ -1,8 +1,10 @@
 import sys
+
+import numpy as np
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from Pump_GUI import Ui_Form
-from Rankine_Classes import rankineController
+#from Pump_Classes import PumpController
 import Calc_state
 from Calc_state import SatPropsIsobar
 from Calc_state import UnitConverter as UC
@@ -25,8 +27,8 @@ class MainWindow(qtw.QWidget, Ui_Form):
         self.AssignSlots()
         self.MakeCanvas()
         #A tuple containing the widgets that get updated in the View
-        #self.widgets = (self.le_H1, self.le_H2, self.le_H3, self.le_H4, self.le_TurbineWork, self.le_PumpWork, self.le_HeatAdded, self.le_Efficiency, self.lbl_SatPropHigh, self.lbl_SatPropLow, self.ax, self.canvas)
-        #self.RC = rankineController(self.widgets)  # instantiate a rankineController object
+        # self.widgets = (self.lineEdit_2, self.lineEdit_3, self.lineEdit_4, self.lineEdit_5, self.lineEdit_6, self.ax, self.canvas)
+        # self.RC = PumpController(self.widgets)  # instantiate a rankineController object
         # a place to store coordinates from last position on graph
         #self.otherwidgets = (self.le_PHigh, self.le_PLow, self.le_TurbineInletCondition, self.lbl_PHigh, self.lbl_PLow, self.lbl_H1Units, self.lbl_H2Units, self.lbl_H3Units, self.lbl_H4Units, self.lbl_TurbineWorkUnits, self.lbl_PumpWorkUnits, self.lbl_HeatAddedUnits)
         self.oldXData=0.0
@@ -59,14 +61,21 @@ class MainWindow(qtw.QWidget, Ui_Form):
         self.le_Filename.setText(filename)  # echo the filename on the GUI
         file = open(filename, 'r')  # open the file
         data = file.readlines()  # read all the lines of the file into a list of strings
+        file.close()
         # self.Controller.importPipeNetwork(data, PN=self.Model)  # import the pipe network information
         # self.updateView()  # update the view of the model
         self.le_Filename.setText(filename)
         self.lineEdit_2.setText(data[0])
-        Flow_and_Head=str.split(data[2]," ")
+        Flow_and_Head=str.split(data[2],"    ")
         self.lineEdit_3.setText(Flow_and_Head[0])
         #Head_Units=str.partition(Flow_and_Head[5]," ")
-        self.lineEdit_6.setText(Flow_and_Head[5])
+        self.lineEdit_6.setText(Flow_and_Head[1])
+        data_list=[]
+        # for x in data[3:]:
+        #     gbs=str.split(data[x],"  ")
+        #     data_list.append(gbs)
+        #     pass
+        nums=np.array(data[3:])
         pass
 
     def ExitApp(self):
