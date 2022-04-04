@@ -56,9 +56,11 @@ class rankineController():
         """
 
         # this function will be used as a Passthrough Function to Convert
-        metric = SI
+        # The only way to get this function to pass correctly is to assign names to the arguments
+        # If names aren't assigned this will crash the program's ability to convert the units.
+        yes = SI
         model = self.Model
-        self.View.Convert(*args, SI=metric, Model=model)
+        self.View.Convert(*args, SI=yes, Model=model)
 
     def updateModel(self, *args, SI=True):
         """
@@ -228,47 +230,6 @@ class rankineView():
         self.plot_cycle_TS(axObj=ax, Model=Model, SI=SI)
         canvas.draw()
 
-        if SI is True:
-            lbl_H1Units.setText("kJ/kg")
-            lbl_H2Units.setText("kJ/kg")
-            lbl_H3Units.setText("kJ/kg")
-            lbl_H4Units.setText("kJ/kg")
-            lbl_PHigh.setText("P High (bar)")
-            lbl_PLow.setText("P Low (bar)")
-            ModelPHigh = Model.p_high / 100
-            ModelPLow = Model.p_low / 100
-            lbl_TurbineWorkUnits.setText("kJ/kg")
-            lbl_PumpWorkUnits.setText("kJ/kg")
-            lbl_HeatAddedUnits.setText("kJ/kg")
-            le_PHigh.setText(str("{:0.2f}".format(ModelPHigh)))
-            le_PLow.setText(str("{:0.2f}".format(ModelPLow)))
-            le_H1.setText("{:0.2f}".format(Model.state1.h))
-            le_H2.setText("{:0.2f}".format(Model.state2.h))
-            le_H3.setText("{:0.2f}".format(Model.state3.h))
-            le_H4.setText("{:0.2f}".format(Model.state4.h))
-            le_TurbineWork.setText("{:0.2f}".format(Model.turbine_work))
-            le_PumpWork.setText("{:0.2f}".format(Model.pump_work))
-            le_HeatAdded.setText("{:0.2f}".format(Model.heat_added))
-
-        if SI is False:
-            lbl_H1Units.setText("BTU/lb")
-            lbl_H2Units.setText("BTU/lb")
-            lbl_H3Units.setText("BTU/lb")
-            lbl_H4Units.setText("BTU/lb")
-            lbl_PHigh.setText("P High (psi)")
-            lbl_PLow.setText("P Low (psi)")
-            lbl_TurbineWorkUnits.setText("BTU/lb")
-            lbl_PumpWorkUnits.setText("BTU/lb")
-            lbl_HeatAddedUnits.setText("BTU/lb")
-            le_PHigh.setText(str('{:0.2f}'.format(float(Model.p_high) / 100 * UnitConverter.bar_to_psi)))
-            le_PLow.setText(str('{:0.2f}'.format(float(Model.p_low) / 100 * UnitConverter.bar_to_psi)))
-            le_H1.setText("{:0.2f}".format(Model.state1.h * UnitConverter.kJperkg_to_BTUperlb))
-            le_H2.setText("{:0.2f}".format(Model.state2.h * UnitConverter.kJperkg_to_BTUperlb))
-            le_H3.setText("{:0.2f}".format(Model.state3.h * UnitConverter.kJperkg_to_BTUperlb))
-            le_H4.setText("{:0.2f}".format(Model.state4.h * UnitConverter.kJperkg_to_BTUperlb))
-            le_TurbineWork.setText("{:0.2f}".format(Model.turbine_work * UnitConverter.kJperkg_to_BTUperlb))
-            le_PumpWork.setText("{:0.2f}".format(Model.pump_work * UnitConverter.kJperkg_to_BTUperlb))
-            le_HeatAdded.setText("{:0.2f}".format(Model.heat_added * UnitConverter.kJperkg_to_BTUperlb))
 
     def plot_cycle_TS(self, axObj=None, Model=None, SI=True):
         """
