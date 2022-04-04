@@ -106,22 +106,22 @@ class MainWindow(qtw.QWidget, Ui_Form):
         # poly1D_fn=np.poly1d(curve_head)
         cv_hd_ln= lambda x: curve_head[0]*(x**3)+curve_head[1]*(x**2)+curve_head[2]*(x)+curve_head[3]
         cv_eff_ln= lambda y: curve_efficiency[0]*(y**3)+curve_efficiency[1]*(y**2)+curve_efficiency[2]*(y)+curve_efficiency[3]
-        self.figure.clear()
-        self.figure.add_subplot(title='Electric',facecolor='purple',xlim=(10,50),ylim=(0,80))
+        xp = np.linspace(15, 45, 100)
         ax1 = self.ax
         ax1.clear()
-        ax1.plot(flow, head, 'wo', mec='k')
+        ax1.plot(xp, cv_hd_ln(xp), '--', color='k')
+        ax1.plot(flow, head, 'wo')
         ax1.set_ylim(5, 75)
         ax1.set_ylabel('Head(ft)')
         ax1.set_xlabel('Flow Rate (gpm)')
         ax1.legend(['Head($R^2$ = 1.000', 'Head'], loc=6)
         # Work done on second axis
         ax2 = ax1.twinx()
-        ax2.set_ylabel('')
-
-        ax2.plot(flow, efficiency, '^', color='black', mec='k')
+        ax2.set_ylabel('Efficiency (%)')
+        ax2.plot(xp, cv_eff_ln(xp), ':', color='k')
+        ax2.plot(flow, efficiency, '^', color='w')
         ax2.set_ylim(5, 59)
-        ax2.legend([], loc=1)
+        ax2.legend(['Efficiency($R^2$=.989)', 'Efficiency'], loc=1)
         self.canvas.draw()
 
 
