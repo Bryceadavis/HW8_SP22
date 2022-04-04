@@ -50,11 +50,11 @@ class MainWindow(qtw.QWidget, Ui_Form):
         # for the below line edits, the changes made to them will not come into effect unless the user clicks 'enter'
         # Could not identify a way to get this to work without enter
         # If adjustments to pressures are not reasonable program may crash
-        self.le_PHigh.returnPressed.connect(self.SelectQualityOrTHigh)
-        self.le_PHigh.returnPressed.connect(self.Calculate)
-        self.le_PLow.returnPressed.connect(self.SetUnits)
-        self.le_PLow.returnPressed.connect(self.Calculate)
-        self.le_PHigh.returnPressed.connect(self.SetUnits)
+        self.le_PHigh.returnPressed.connect(self.SelectQualityOrTHigh)  # user must press enter to proceed with results
+        self.le_PHigh.returnPressed.connect(self.Calculate)  # must press enter
+        self.le_PLow.returnPressed.connect(self.SetUnits)  # must press enter
+        self.le_PLow.returnPressed.connect(self.Calculate)  # must press enter
+        self.le_PHigh.returnPressed.connect(self.SetUnits)  # must press enter
 
     def MakeCanvas(self):
         """
@@ -85,12 +85,15 @@ class MainWindow(qtw.QWidget, Ui_Form):
         """
         The first step needed is to define the two pressure iso-bars.
         Next this function will check the conditions of the form and proceed with the proper conversions.
-        Lastly this function will utilize Update model from Rankine Controller to start the overall program.
+        Lastly this function will utilize Update model from Rankine Controller to start the overall program. Went with
+        Nested for loops in order to avoid crashes that occurred when the statements were broken out into separate
+        functions
         :return:
         """
         PHigh = self.le_PHigh.text()  # defining high pressure to be equal to le text
         PLow = self.le_PLow.text()  # defining low pressure to be equal to le text
-        # Nested if Statement approach used for form conditions. Tried if/else statements and it will crash.
+        # Had to use these nested if statements in this form. If these statements are separated into their own
+        # functions as before it will cause the unit conversions to crash.
         if self.rb_SI.isChecked():  # if the radio button for SI is checked, Pressure will be converted to kpa
             PHigh = float(PHigh) * 100  # bar to kpa.
             PLow = float(PLow) * 100  # bart to kpa
@@ -125,19 +128,25 @@ class MainWindow(qtw.QWidget, Ui_Form):
             self.lbl_TurbineInletCondition.setText(
                 ("Turbine Inlet: {} =".format('x' if self.rdo_Quality.isChecked() else 'THigh (deg F)')))
         # Default Value will equal TSat if SI
+        # Once again, had to collect the various functions and put them in this nested form in order to keep the
+        # program from crashing
         if self.rb_SI.isChecked():
             T_HighNew = SatPropsIsobar(float(self.le_PHigh.text()) * 100).TSat
-            if self.RC.Model.t_high is not None:
+            if self.RC.Model.t_high is not None:  # found a way to denote if T_high has a value, this way the model
+                # will update accordingly
                 T_HighNew = self.RC.Model.t_high
             T_HighNew = "{:0.2f}".format(T_HighNew)
             # default value for line edit else the new temperature value will be used.
             self.le_TurbineInletCondition.setText(("1" if self.rdo_Quality.isChecked() else T_HighNew))
             if self.rb_English.isChecked():
-                T_HighNew = SatPropsIsobar(float(self.le_PHigh.text()) / UnitConverter.kpa_to_psi).TSat
+
+                T_HighNew = SatPropsIsobar(float(self.le_PHigh.text()) / UnitConverter.kpa_to_psi).TSat  # converting
                 if self.RC.Model.t_high is not None:
                     T_HighNew = self.RC.Model.t_high
                 T_HighNew = round(UnitConverter.C_to_F(T_HighNew), 2)
-                self.le_TurbineInletCondition.setText(('1' if self.rdo_Quality.isChecked() else T_HighNew))
+
+                self.le_TurbineInletCondition.setText((flaot(self.rdo_Quality.text()) if self.rdo_Quality.isChecked()
+                                                       else T_HighNew))
 
     def SetUnits(self):
         self.RC.updateUnits(self.widgets, self.otherwidgets, SI=self.rb_SI.isChecked())
