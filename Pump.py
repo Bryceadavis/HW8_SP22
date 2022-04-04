@@ -87,8 +87,8 @@ class MainWindow(qtw.QWidget, Ui_Form):
             ora=str.split(ban,"  ")
             ap.append(ora)
         #pch=np.array(ap)
-        flow=[] #defined the flow
-        head=[] #defined the head
+        flow=[] #defined the flow and calculating in list 
+        head=[] #defined the head, and going to add in list 
         efficiency=[] #defined the efficiency
         for x2 in ap:
             flow.append(float(x2[0]))
