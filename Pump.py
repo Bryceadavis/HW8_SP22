@@ -54,6 +54,7 @@ class MainWindow(qtw.QWidget, Ui_Form):
         # self.rb_English.clicked.connect(self.SetUnits)
 
     def OpenDialog(self):  # some code borrowed from Dr.Smay's PipeNetwork_App
+        #creating a code that will read the information from a pipe network file 
         """
         Read the information from a pipe network file.
         :return:
@@ -68,8 +69,8 @@ class MainWindow(qtw.QWidget, Ui_Form):
         file.close()
         # self.Controller.importPipeNetwork(data, PN=self.Model)  # import the pipe network information
         # self.updateView()  # update the view of the model
-        self.le_Filename.setText(filename)
-        self.lineEdit_2.setText(data[0])
+        self.le_Filename.setText(filename) #Name  the text to filename
+        self.lineEdit_2.setText(data[0]) #Name the set Text to data
         Flow_and_Head=str.split(data[2],"    ")
         self.lineEdit_3.setText(Flow_and_Head[0])
         #Head_Units=str.partition(Flow_and_Head[5]," ")
@@ -86,22 +87,22 @@ class MainWindow(qtw.QWidget, Ui_Form):
             ora=str.split(ban,"  ")
             ap.append(ora)
         #pch=np.array(ap)
-        flow=[]
-        head=[]
-        efficiency=[]
+        flow=[] #defined the flow
+        head=[] #defined the head
+        efficiency=[] #defined the efficiency
         for x2 in ap:
             flow.append(float(x2[0]))
         for y2 in ap:
             head.append(float(y2[1]))
         for z in ap:
             efficiency.append(float(z[2]))
-        flow2=np.array(flow)
-        head2=np.array(head)
-        efficiency2=np.array(efficiency)
+        flow2=np.array(flow) #create an array for the flow
+        head2=np.array(head) #create an array for the Head
+        efficiency2=np.array(efficiency) #create an array that includes the efficiency
         #print(flow2)
-        curve_head=np.polyfit(flow,head,3)
-        # curve_head_str=str.strip(str(curve_head[0]), " ")
-        curve_efficiency=np.polyfit(flow,efficiency,3)
+        curve_head=np.polyfit(flow,head,3) #creat the polyfit for the flow and head into a curve head
+        # curve_head_str=str.strip(str(curve_head[0]), " ") 
+        curve_efficiency=np.polyfit(flow,efficiency,3) # create a polyfit for the flow and efficiency into a curve
         self.lineEdit_4.setText("{:.4f}, {:.4f}, {:.4f}, {:.4f}".format(curve_head[3],curve_head[2],curve_head[1],curve_head[0]))
         self.lineEdit_5.setText("{:.4f}, {:.4f}, {:.4f}, {:.4f}".format(curve_efficiency[3], curve_efficiency[2], curve_efficiency[1], curve_efficiency[0]))
         # poly1D_fn=np.poly1d(curve_head)
