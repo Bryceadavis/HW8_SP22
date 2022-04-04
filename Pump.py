@@ -75,7 +75,17 @@ class MainWindow(qtw.QWidget, Ui_Form):
         #     gbs=str.split(data[x],"  ")
         #     data_list.append(gbs)
         #     pass
-        nums=np.array(data[3:])
+        nums=data[3:]
+        apple=[]
+        for x in nums:
+            banana=str.strip(x,'\n')
+            oranges=str.split(banana,"  ")
+            apple.append(oranges)
+        peaches=np.array(apple)
+        flow=peaches[:,0]
+        head=peaches[:,1]
+        efficiency=peaches[:,2]
+
         pass
 
     def ExitApp(self):
