@@ -108,9 +108,9 @@ class MainWindow(qtw.QWidget, Ui_Form):
         # poly1D_fn=np.poly1d(curve_head)
         cv_hd_ln= lambda x: curve_head[0]*(x**3)+curve_head[1]*(x**2)+curve_head[2]*(x)+curve_head[3]
         cv_eff_ln= lambda y: curve_efficiency[0]*(y**3)+curve_efficiency[1]*(y**2)+curve_efficiency[2]*(y)+curve_efficiency[3]
-        xp = np.linspace(15, 43, 100)
-        ax1 = self.ax
-        ax1.clear()
+        xp = np.linspace(15, 43, 100)  # linspace to plug in values 
+        ax1 = self.ax  # subplots
+        ax1.clear() # subplots 
         ax1.plot(xp, cv_hd_ln(xp), '--', color='k')
         ax1.plot(flow,head,'o', markerfacecolor='w', markeredgecolor='k')
         ax1.set_ylim(5, 75)
