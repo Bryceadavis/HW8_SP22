@@ -104,8 +104,10 @@ class MainWindow(qtw.QWidget, Ui_Form):
         self.lineEdit_4.setText("{:.4f}, {:.4f}, {:.4f}, {:.4f}".format(curve_head[3],curve_head[2],curve_head[1],curve_head[0]))
         self.lineEdit_5.setText("{:.4f}, {:.4f}, {:.4f}, {:.4f}".format(curve_efficiency[3], curve_efficiency[2], curve_efficiency[1], curve_efficiency[0]))
         # poly1D_fn=np.poly1d(curve_head)
-        # curve_head[1](x**3)+
-        # self.canvas.draw()
+        cv_hd_ln= lambda x: curve_head[0]*(x**3)+curve_head[1]*(x**2)+curve_head[2]*(x)+curve_head[3]
+        cv_eff_ln= lambda y: curve_efficiency[0]*(y**3)+curve_efficiency[1]*(y**2)+curve_efficiency[2]*(y)+curve_efficiency[3]
+        self.figure.clear()
+        self.figure.add_subplot(title='Electric',facecolor='purple',xlim=(10,50),ylim=(0,80))
         pass
 
     def Plot_doub(self):
@@ -130,9 +132,6 @@ class MainWindow(qtw.QWidget, Ui_Form):
         self.canvas=FigureCanvasQTAgg(self.figure)
         #Step 3.
         self.ax = self.figure.add_subplot()
-        #self.canvas.set_window_title('Electric')
-
-
         #Step 4.
         self.verticalLayout.addWidget(self.canvas)
 
