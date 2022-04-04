@@ -81,18 +81,18 @@ class MainWindow(qtw.QWidget, Ui_Form):
         #     pass
         nums=data[3:]
         ap=[]
-        for x in nums:
-            ban=str.strip(x,'\n')
+        for x3 in nums:
+            ban=str.strip(x3,'\n')
             ora=str.split(ban,"  ")
             ap.append(ora)
         #pch=np.array(ap)
         flow=[]
         head=[]
         efficiency=[]
-        for x in ap:
-            flow.append(float(x[0]))
-        for y in ap:
-            head.append(float(y[1]))
+        for x2 in ap:
+            flow.append(float(x2[0]))
+        for y2 in ap:
+            head.append(float(y2[1]))
         for z in ap:
             efficiency.append(float(z[2]))
         flow2=np.array(flow)
@@ -103,9 +103,9 @@ class MainWindow(qtw.QWidget, Ui_Form):
         curve_efficiency=np.polyfit(flow,efficiency,3)
         self.lineEdit_4.setText("{:.4f}, {:.4f}, {:.4f}, {:.4f}".format(curve_head[3],curve_head[2],curve_head[1],curve_head[0]))
         self.lineEdit_5.setText("{:.4f}, {:.4f}, {:.4f}, {:.4f}".format(curve_efficiency[3], curve_efficiency[2], curve_efficiency[1], curve_efficiency[0]))
-        poly1D_fn=np.poly1d(curve_head)
-
-        plt.plot(flow,head,'yo',x,poly1D_fn(x))
+        # poly1D_fn=np.poly1d(curve_head)
+        # curve_head[1](x**3)+
+        # self.canvas.draw()
         pass
 
     def Plot_doub(self):
@@ -130,6 +130,9 @@ class MainWindow(qtw.QWidget, Ui_Form):
         self.canvas=FigureCanvasQTAgg(self.figure)
         #Step 3.
         self.ax = self.figure.add_subplot()
+        #self.canvas.set_window_title('Electric')
+
+
         #Step 4.
         self.verticalLayout.addWidget(self.canvas)
 
