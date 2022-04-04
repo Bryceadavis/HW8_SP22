@@ -3,7 +3,7 @@ import sys
 import numpy as np
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
-from Pump_GUI import Ui_Form
+from Pump_GUI2 import Ui_Form
 #from Pump_Classes import PumpController
 import Calc_state
 from Calc_state import SatPropsIsobar
@@ -70,22 +70,26 @@ class MainWindow(qtw.QWidget, Ui_Form):
         self.lineEdit_3.setText(Flow_and_Head[0])
         #Head_Units=str.partition(Flow_and_Head[5]," ")
         self.lineEdit_6.setText(Flow_and_Head[1])
-        data_list=[]
+        # data_list=[]
         # for x in data[3:]:
         #     gbs=str.split(data[x],"  ")
         #     data_list.append(gbs)
         #     pass
-        nums=data[3:]
-        apple=[]
-        for x in nums:
-            banana=str.strip(x,'\n')
-            oranges=str.split(banana,"  ")
-            apple.append(oranges)
-        peaches=np.array(apple)
-        flow=peaches[:,0]
-        head=peaches[:,1]
-        efficiency=peaches[:,2]
+        # nums=data[3:]
+        # ap=[]
+        # for x in nums:
+        #     ban=str.strip(x,'\n')
+        #     ora=str.split(ban,"  ")
+        #     ap.append(ora)
+        # pch=np.array(ap)
+        # flow=pch[:,0]
+        # head=pch[:,1]
+        # efficiency=pch[:,2]
+        # curve_head=np.polyfit(flow,head,3)
+        # curve_efficiency=np.polyfit(flow,efficiency,3)
+        pass
 
+    def Plot_doub(self):
         pass
 
     def ExitApp(self):
@@ -101,14 +105,14 @@ class MainWindow(qtw.QWidget, Ui_Form):
         :return:
         """
         #Step 1.
-        self.figure=Figure(figsize=(2,4),tight_layout=True, frameon=True)
+        self.figure=Figure(figsize=(2,4),frameon=True) #tight_layout=True cannot be used w/ vertical layout
         #Step 2.
         self.canvas=FigureCanvasQTAgg(self.figure)
         #Step 3.
         self.ax = self.figure.add_subplot()
         #Step 4.
-        # self.Output_groupBox.layout().addWidget(self.canvas, 6)
-        # self.canvas.mpl_connect("motion_notify_event", self.mouseMoveEvent)
+        self.verticalLayout.addWidget(self.canvas)
+        #self.canvas.mpl_connect("motion_notify_event", self.mouseMoveEvent)
 
     #since my main window is a widget, I can customize its events by overriding the default event
 
