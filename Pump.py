@@ -103,7 +103,7 @@ class MainWindow(qtw.QWidget, Ui_Form):
         curve_head=np.polyfit(flow,head,3) #creat the polyfit for the flow and head into a curve head
         # curve_head_str=str.strip(str(curve_head[0]), " ") 
         curve_efficiency=np.polyfit(flow,efficiency,3) # create a polyfit for the flow and efficiency into a curve
-        self.lineEdit_4.setText("{:.4f}, {:.4f}, {:.4f}, {:.4f}".format(curve_head[3],curve_head[2],curve_head[1],curve_head[0]))
+        self.lineEdit_4.setText("{:.4f}, {:.4f}, {:.4f}, {:.4f}".format(curve_head[3],curve_head[2],curve_head[1],curve_head[0])) # formatting line edit 
         self.lineEdit_5.setText("{:.4f}, {:.4f}, {:.4f}, {:.4f}".format(curve_efficiency[3], curve_efficiency[2], curve_efficiency[1], curve_efficiency[0]))
         # poly1D_fn=np.poly1d(curve_head)
         cv_hd_ln= lambda x: curve_head[0]*(x**3)+curve_head[1]*(x**2)+curve_head[2]*(x)+curve_head[3]
@@ -114,7 +114,7 @@ class MainWindow(qtw.QWidget, Ui_Form):
         ax1.plot(xp, cv_hd_ln(xp), '--', color='k')
         ax1.plot(flow,head,'o', markerfacecolor='w', markeredgecolor='k')
         ax1.set_ylim(5, 75)
-        ax1.set_ylabel('Head (ft)')
+        ax1.set_ylabel('Head (ft)')  # labels 
         ax1.set_xlabel('Flow Rate (gpm)')
         ax1.legend(['Head($R^2$ = 1.000)', 'Head'], loc=6)
         # Work done on second axis
